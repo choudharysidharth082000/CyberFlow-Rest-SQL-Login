@@ -31,7 +31,10 @@ router.post('/login',async (req, res)=>
 
     if(!resultFromJoi)
     {
-        res.send('User Has Entered Wrong details');
+        res.status(400).json({
+            status: false,
+            message: "Invalid Inputs for Field"
+        });
     }
 
     try 
@@ -43,7 +46,10 @@ router.post('/login',async (req, res)=>
         });
 
         if(!user){
-            res.send('User Not found');
+            res.status(404).json({
+                status: false,
+                message: "User Does not Exist"
+            });
         }
 
 
@@ -58,7 +64,10 @@ router.post('/login',async (req, res)=>
 
         if(!verifier)
         {
-            res.send('Invalid UserName or Password');
+            res.status(404).json({
+                status: false,
+                message: "Invalid Username or PAssword"
+            })
         }
 
 
@@ -118,7 +127,10 @@ router.post('/signup',async (req,res)=>
        
         if(!resultFromJoi)
         {
-            res.send('You have entered Wrong Credentials');
+            res.status(400).json({
+                status: false,
+                message: "Invalid Inputs for Field"
+            });
         }
         
 
@@ -133,7 +145,10 @@ router.post('/signup',async (req,res)=>
 
         if(!generateHash)
         {
-            res.send('Internal Password Error in hashing');
+            res.status(500).json({
+                status: false,
+                message: "Hashpassword Function failed"
+            })
         }
 
         body.password = generateHash;
@@ -143,22 +158,30 @@ router.post('/signup',async (req,res)=>
         const newJWT = generateJWT(body);
         
 
-        // // try{
-        //     const adminEmail = await Admin.findOne({email : body.email});
+        try{
+            const adminEmail = await Users.findOne({
+                where:
+                {
+                    email: body.email
+                }
+            });
             
 
             
 
-        //     if(adminEmail)
-        //     {
-        //         res.send('User already Exists');
-        //     }
+            if(adminEmail)
+            {
+                res.status(404).json({
+                    status: false,
+                    message: "User ALready Exists"
+                })
+            }
 
-        // // }
-        // // catch(err)
-        // // {
-        // //     throw new Error(`${err}`);
-        // // }
+        }
+        catch(err)
+        {
+            throw new Error(`${err}`);
+        }
 
 
         try 
