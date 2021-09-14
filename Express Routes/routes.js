@@ -243,6 +243,7 @@ const swaggerOptions = {
   };
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions);
+console.log(swaggerDocs);
  
  
 /**
@@ -302,10 +303,7 @@ const swaggerDocs = swaggerJsDoc(swaggerOptions);
  *                              type: number 
  *                              description: Phone for the user 
  *                              required: true
- *                          title:
- *                              type: string 
- *                              description: Title for the user 
- *                              required: true
+ *                         
  *      responses:
  *          200:
  *              description: Status Good                
